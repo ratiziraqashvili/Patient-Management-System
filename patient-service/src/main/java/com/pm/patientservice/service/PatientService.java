@@ -1,6 +1,6 @@
 package com.pm.patientservice.service;
 
-import com.pm.patientservice.PatientRequestDTO;
+import com.pm.patientservice.dto.PatientRequestDTO;
 import com.pm.patientservice.dto.PatientResponseDTO;
 import com.pm.patientservice.exception.EmailAlreadyExistsException;
 import com.pm.patientservice.exception.PatientNotFoundException;
@@ -43,7 +43,7 @@ public class PatientService {
         Patient patient = patientRepository.findById(id).orElseThrow(
                 () -> new PatientNotFoundException("Patient not found with ID: " + id));
 
-        if (patientRepository.existsByEmail(patientRequestDTO.getEmail())) {
+        if (patientRepository.existsByEmailAndIdNot(patientRequestDTO.getEmail(), id)) {
             throw new EmailAlreadyExistsException(
                     "A patient with this email " + "already exists"
                             + patientRequestDTO.getEmail());
